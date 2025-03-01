@@ -20,6 +20,16 @@ export async function GET(request: Request) {
         background: { r: 240, g: 240, b: 240 }
       }
     })
+      .composite([
+        {
+          text: {
+            text: `${width} X ${height}`,
+            font: 'sans-serif',
+            align: 'center',
+            justify: true,
+          },
+        }
+      ])
       .webp()
       .toBuffer();
 

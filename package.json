@@ -1,0 +1,24 @@
+{
+  "name": "@kingoftac/placeholders",
+  "version": "0.0.0",
+  "description": "",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KingOfTac/placeholders.git"
+  },
+  "author": "Nathan Brown",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KingOfTac/placeholders/issues"
+  },
+  "homepage": "https://github.com/KingOfTac/placeholders#readme",
+  "devDependencies": {
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "sharp": "^0.33.5"
+  }
+}

@@ -2,36 +2,53 @@ import sharp from 'sharp';
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  let width, height;
+  let width, height, text;
 
   try {
-    width = Number(url.searchParams.get('width')) ?? 300;
-    height = Number(url.searchParams.get('height')) ?? 200;
+    width = parseInt(url.searchParams.get('width')!);
+    height = parseInt(url.searchParams.get('height')!);
+    text = url.searchParams.has('text');
   } catch (error) {
     return new Response('Invalid width or height', { status: 400 });
   }
 
   try {
-    const imageBuffer = await sharp({
+    let image = sharp({
       create: {
         width,
         height,
         channels: 3,
         background: { r: 240, g: 240, b: 240 }
       }
-    })
-      .composite([
+    });
+
+    if (text) {
+      const svgImage = Buffer.from(`
+        <svg width="${width}" height="${height}">
+          <rect x="0" y="0" width="${width}" height="${height}" fill="transparent" />
+          <text
+            x="50%" y="50%"
+            dominant-baseline="middle"
+            text-anchor="middle"
+            font-family="Arial"
+            font-size="24"
+            fill="black"
+          >
+            ${width} X ${height}
+          </text>
+        </svg>  
+      `);
+  
+      image = image.composite([
         {
-          text: {
-            text: `${width} X ${height}`,
-            font: 'sans-serif',
-            align: 'center',
-            justify: true,
-          },
+          input: svgImage,
+          top: 0,
+          left: 0,
         }
-      ])
-      .webp()
-      .toBuffer();
+      ]);
+    }
+
+    const imageBuffer = await image.webp().toBuffer();
 
     const response = new Response(
       imageBuffer,

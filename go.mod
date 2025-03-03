@@ -1,6 +1,6 @@
 module placholders
 
-go 1.23.3
+go 1.24
 
 require github.com/fogleman/gg v1.3.0
 
